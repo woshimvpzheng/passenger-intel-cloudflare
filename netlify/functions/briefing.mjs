@@ -6,7 +6,8 @@ import { beijingDateKey } from "./_lib/time.mjs";
 export default async function briefing() {
   const state = await readState();
   let briefing = state.briefing;
-  if (!briefing || briefing.date !== beijingDateKey()) {
+  const staleSections = briefing?.sections?.length === 0 && state.articles.some((item) => item.featured);
+  if (!briefing || briefing.date !== beijingDateKey() || staleSections) {
     briefing = buildBriefing(state.articles);
     await writeState({ ...state, briefing });
   }
