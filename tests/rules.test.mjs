@@ -85,6 +85,15 @@ test("已入库的协会分会栏目页会被缓存过滤", () => {
   assert.equal(state.articles.length, 0);
 });
 
+test("泛交通协会活动不会进入道路客运情报", () => {
+  assert.equal(isRelevantPassengerNews({
+    title: "中国交通运输协会举办科学技术奖表彰大会",
+    content: "综合交通运输行业交流活动，涉及物流、铁路和工程建设。",
+    sourceName: "中国交通运输协会",
+    region: "全国",
+  }), false);
+});
+
 test("道路客运政策能进入政策监管", () => {
   const article = enrichCandidate({
     title: "交通运输部发布道路客运安全监管通知",

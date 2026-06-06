@@ -10,14 +10,6 @@ const roadKeywords = [
   "上下班班车", "班车租赁", "客车租赁", "大巴租赁", "车辆租赁", "车辆接送", "通勤车", "接送服务",
 ];
 
-const relevantKeywords = [
-  ...roadKeywords,
-  "交通运输", "综合交通", "出行服务", "运输服务", "春运", "暑运", "道路水路",
-  "票价", "补贴", "线路", "班次", "站场", "安全生产", "监管", "执法", "处罚",
-  "招标", "采购", "政府采购", "投标", "中标", "成交", "结果公告", "招标公告", "采购公告", "磋商公告",
-  "租赁服务", "包车服务", "班车服务", "通勤", "上下班", "厂车", "校车", "大巴", "客车",
-];
-
 const foreignKeywords = ["国外", "海外", "美国", "欧洲", "日本", "韩国", "印度", "越南", "泰国", "跨境", "国际客运"];
 const nonRoadOnlyKeywords = ["铁路", "高铁", "民航", "航班", "机场", "水运", "港口", "邮轮", "地铁", "航运"];
 const weakPassengerKeywords = ["低空经济", "品质工程", "黄金港口", "水运网", "鱼鸟", "立体交通网", "高速车辆救援", "路政"];
@@ -52,13 +44,25 @@ export function isRelevantPassengerNews(item) {
   if (isDirectoryOrSectionPage(item)) return false;
   if (foreignKeywords.some((word) => text.includes(word))) return false;
   const roadHit = roadKeywords.some((word) => text.includes(word));
-  const relevantHit = relevantKeywords.some((word) => text.includes(word));
+  const passengerProcurementHit = isPassengerProcurement(subjectText);
+  const passengerPolicyHit = isPassengerPolicy(subjectText);
   const weakOnly = weakPassengerKeywords.some((word) => subjectText.includes(word));
   if (weakOnly && !roadHit) return false;
-  if (!roadHit && !relevantHit) return false;
+  if (!roadHit && !passengerProcurementHit && !passengerPolicyHit) return false;
   const nonRoadHits = nonRoadOnlyKeywords.filter((word) => text.includes(word)).length;
   if (nonRoadHits && !roadHit) return false;
   return domesticHints.some((word) => text.includes(word)) || item.region !== "国外";
+}
+
+function isPassengerProcurement(text) {
+  const procurementWords = ["招标", "采购", "投标", "中标", "成交", "结果公告", "采购公告", "招标公告", "磋商公告"];
+  const passengerServiceWords = ["通勤", "上下班", "班车", "大巴", "客车", "包车", "接送", "车辆租赁", "租赁服务"];
+  return procurementWords.some((word) => text.includes(word)) && passengerServiceWords.some((word) => text.includes(word));
+}
+
+function isPassengerPolicy(text) {
+  const passengerWords = ["道路客运", "班线客运", "定制客运", "农村客运", "城乡客运", "旅游包车", "包车客运", "客运站", "道路旅客运输", "旅客运输"];
+  return strictPolicyWords.some((word) => text.includes(word)) && passengerWords.some((word) => text.includes(word));
 }
 
 function isDirectoryOrSectionPage(item) {
