@@ -1,0 +1,129 @@
+{
+  "articles": [
+    {
+      "id": "sample-policy-001",
+      "clusterId": "cluster-policy-custom",
+      "title": "福建发布加快班车客运定制服务发展实施方案",
+      "sourceId": "fujian-transport",
+      "sourceName": "福建省交通运输厅",
+      "sourceTier": "T1",
+      "sourceType": "地方官方",
+      "region": "福建",
+      "url": "https://jtyst.fujian.gov.cn/",
+      "publishedAt": "2026-06-05T08:30:00+08:00",
+      "fetchedAt": "2026-06-05T09:00:00+08:00",
+      "category": "政策监管",
+      "summary": "地方交通主管部门推动班车客运定制化服务，强调统一平台、县乡覆盖和服务质量提升。",
+      "reason": "涉及道路客运供给方式调整，对班线企业转型、平台建设和县域客源经营有直接参考价值。",
+      "tags": ["定制客运", "班线转型", "县域出行"],
+      "dimensions": {
+        "policyImpact": 92,
+        "businessValue": 86,
+        "riskLevel": 24,
+        "timeliness": 78,
+        "sourceAuthority": 96
+      },
+      "score": 88,
+      "featured": true
+    },
+    {
+      "id": "sample-business-001",
+      "clusterId": "cluster-station-transform",
+      "title": "某客运集团探索客运站综合服务和旅游集散融合运营",
+      "sourceId": "transport-news",
+      "sourceName": "中国交通新闻网",
+      "sourceTier": "T2",
+      "sourceType": "行业媒体",
+      "region": "全国",
+      "url": "https://www.zgjtb.com/",
+      "publishedAt": "2026-06-05T07:50:00+08:00",
+      "fetchedAt": "2026-06-05T09:00:00+08:00",
+      "category": "经营借鉴",
+      "summary": "客运企业围绕站场资源，叠加旅游集散、便民服务和车辆接驳，提升站场坪效和非票收入。",
+      "reason": "属于同行经营策略，可借鉴其站场复合经营、交旅融合和增值服务设计。",
+      "tags": ["客运站转型", "交旅融合", "非票收入"],
+      "dimensions": {
+        "policyImpact": 52,
+        "businessValue": 91,
+        "riskLevel": 18,
+        "timeliness": 72,
+        "sourceAuthority": 68
+      },
+      "score": 80,
+      "featured": true
+    },
+    {
+      "id": "sample-risk-001",
+      "clusterId": "cluster-safety-charter",
+      "title": "多地开展旅游包车安全隐患专项排查",
+      "sourceId": "mot-news",
+      "sourceName": "交通运输部",
+      "sourceTier": "T1",
+      "sourceType": "官方",
+      "region": "全国",
+      "url": "https://www.mot.gov.cn/",
+      "publishedAt": "2026-06-04T17:10:00+08:00",
+      "fetchedAt": "2026-06-05T09:00:00+08:00",
+      "category": "风险预警",
+      "summary": "监管部门强调旅游包车车辆技术状况、驾驶员资质、动态监控和应急处置排查。",
+      "reason": "涉及安全监管和包车合规责任，应关注企业车辆、驾驶员、调度和动态监控管理。",
+      "tags": ["旅游包车", "安全监管", "动态监控"],
+      "dimensions": {
+        "policyImpact": 76,
+        "businessValue": 62,
+        "riskLevel": 94,
+        "timeliness": 80,
+        "sourceAuthority": 95
+      },
+      "score": 90,
+      "featured": true
+    },
+    {
+      "id": "sample-tender-001",
+      "clusterId": "cluster-guangdong-commute-tender",
+      "title": "生产人员通勤班车租赁服务项目结果公告",
+      "sourceId": "gd-gov-purchase",
+      "sourceName": "广东省政府采购网",
+      "sourceTier": "T1.5",
+      "sourceType": "招标采购",
+      "region": "广东",
+      "url": "https://nr.gd.gov.cn/zwgknew/ygzj/zfcg/content/post_4713906.html",
+      "publishedAt": "2026-06-05T10:20:00+08:00",
+      "fetchedAt": "2026-06-05T10:30:00+08:00",
+      "category": "招标采购",
+      "summary": "广东省内通勤班车租赁服务采购结果，可用于观察企事业单位上下班接送、车辆配置和服务周期需求。",
+      "reason": "涉及通勤班车租赁采购机会，建议关注线路半径、车辆规模、服务期限、报价边界和履约风险。",
+      "tags": [
+        "广东招标",
+        "通勤班车",
+        "车辆租赁"
+      ],
+      "dimensions": {
+        "policyImpact": 42,
+        "businessValue": 88,
+        "riskLevel": 34,
+        "timeliness": 82,
+        "sourceAuthority": 78
+      },
+      "score": 82,
+      "featured": true
+    }
+  ],
+  "clusters": [],
+  "briefing": null,
+  "logs": [
+    {
+      "id": "sample-log",
+      "startedAt": "2026-06-05T09:00:00+08:00",
+      "finishedAt": "2026-06-05T09:00:01+08:00",
+      "mode": "sample",
+      "processedSources": 3,
+      "candidates": 3,
+      "newArticles": 3,
+      "skipped": 0,
+      "aiCalls": 0,
+      "message": "样例数据已加载，等待首次抓取。"
+    }
+  ],
+  "cursor": 0
+}

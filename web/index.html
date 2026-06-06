@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>全国客运情报站</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <button id="sidebarOpenBtn" class="sidebar-open" type="button" aria-label="打开导航">☰</button>
+  <div id="shell" class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">客</span>
+        <div>
+          <strong>客运情报站</strong>
+          <small>Passenger Intel</small>
+        </div>
+        <button id="sidebarCloseBtn" class="sidebar-close" type="button" aria-label="收起导航">×</button>
+      </div>
+      <nav id="nav" class="nav">
+        <button data-tab="精选情报" class="active">精选情报</button>
+        <button data-tab="全部动态">全部动态</button>
+        <button data-tab="客运日报">客运日报</button>
+        <button data-tab="经营借鉴">经营借鉴</button>
+        <button data-tab="广东招标">广东招标</button>
+        <button data-tab="政策监管">政策监管</button>
+        <button data-tab="风险预警">风险预警</button>
+        <button data-tab="信源中心">信源中心</button>
+        <button data-tab="反馈">反馈</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <div>
+          <div class="eyebrow">国内道路客运 · 政策与经营情报</div>
+          <h1 id="pageTitle">精选情报</h1>
+          <p id="pageSub">按信源等级、经营影响和风险价值筛选后的重点信息。</p>
+        </div>
+        <div class="hero-actions">
+          <div class="search-wrap">
+            <input id="searchInput" type="search" placeholder="搜索政策、线路、补贴、企业、地区">
+          </div>
+        </div>
+      </header>
+
+      <section id="metrics" class="metrics"></section>
+
+      <section id="briefingView" class="view hidden">
+        <div class="briefing-card">
+          <div class="section-head">
+            <div>
+              <h2>客运日报</h2>
+              <p id="briefingMeta"></p>
+            </div>
+          </div>
+          <h3 id="briefingHeadline">加载中...</h3>
+          <p id="briefingSummary"></p>
+          <div id="briefingSections" class="briefing-sections"></div>
+        </div>
+      </section>
+
+      <section id="feedView" class="view">
+        <div class="section-head">
+          <div>
+            <h2>情报时间线</h2>
+            <p id="resultMeta">正在加载...</p>
+          </div>
+          <div id="statusPill" class="status-pill">缓存读取中</div>
+        </div>
+        <div id="articleList" class="timeline"></div>
+      </section>
+
+      <section id="sourceView" class="view hidden">
+        <div class="section-head">
+          <div>
+            <h2>信源中心</h2>
+            <p>按 T1、T1.5、T2 分层监控，宁缺毋滥。</p>
+          </div>
+        </div>
+        <div id="sourceList" class="source-grid"></div>
+      </section>
+
+      <section id="feedbackView" class="view hidden">
+        <div class="feedback-panel">
+          <div class="section-head">
+            <div>
+              <h2>反馈</h2>
+              <p>记录错漏、信源建议、页面体验和经营情报需求。</p>
+            </div>
+          </div>
+          <form id="feedbackForm" class="feedback-form" name="passenger-feedback" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="passenger-feedback">
+            <p class="bot-field">
+              <label>请留空 <input name="bot-field"></label>
+            </p>
+            <div class="form-grid">
+              <label>
+                反馈类型
+                <select name="type" required>
+                  <option value="内容错漏">内容错漏</option>
+                  <option value="信源建议">信源建议</option>
+                  <option value="功能建议">功能建议</option>
+                  <option value="页面体验">页面体验</option>
+                </select>
+              </label>
+              <label>
+                联系方式
+                <input name="contact" type="text" placeholder="选填，便于后续沟通">
+              </label>
+            </div>
+            <label>
+              反馈内容
+              <textarea name="message" rows="7" required placeholder="请写下具体问题、建议的信源网址，或希望重点关注的客运经营信息。"></textarea>
+            </label>
+            <div class="feedback-actions">
+              <span id="feedbackStatus" class="feedback-status">提交后会进入 Netlify 表单记录。</span>
+              <button id="feedbackSubmit" type="submit">提交反馈</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

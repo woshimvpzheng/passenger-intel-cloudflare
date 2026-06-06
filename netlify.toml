@@ -1,0 +1,27 @@
+[build]
+  publish = "web"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["data/**"]
+
+[[redirects]]
+  from = "/api/articles"
+  to = "/.netlify/functions/articles"
+  status = 200
+
+[[redirects]]
+  from = "/api/briefing"
+  to = "/.netlify/functions/briefing"
+  status = 200
+
+[[redirects]]
+  from = "/api/sources"
+  to = "/.netlify/functions/sources"
+  status = 200
+
+[[redirects]]
+  from = "/api/status"
+  to = "/.netlify/functions/status"
+  status = 200
