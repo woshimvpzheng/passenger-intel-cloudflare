@@ -5,9 +5,11 @@ import {
   enrichCandidate,
   isRelevantPassengerNews,
   mergeArticles,
+  recalibrateArticleScore,
 } from "../netlify/functions/_lib/rules.mjs";
 import { extractLinks } from "../netlify/functions/_lib/fetcher.mjs";
 import { normalizeState } from "../netlify/functions/_lib/storage.mjs";
+import { timeValue } from "../netlify/functions/articles.mjs";
 
 const t1Source = {
   id: "mot-news",
@@ -103,6 +105,38 @@ test("抓取链接会还原网页编码后的详情页地址", () => {
   });
   assert.equal(links.length, 1);
   assert.equal(links[0].url, "https://www.crta.org.cn/detail.html?id=4&contentId=2229");
+});
+
+test("微信公众号文章链接会被识别为详情页", () => {
+  const links = extractLinks(`
+    <a href="https://mp.weixin.qq.com/s?__biz=abc123&amp;mid=123&amp;idx=1&amp;sn=456">道路客运定制服务观察2026-06-05</a>
+  `, {
+    url: "https://weixin.sogou.com/",
+    listUrl: "https://weixin.sogou.com/",
+  });
+  assert.equal(links.length, 1);
+  assert.equal(links[0].title, "道路客运定制服务观察");
+  assert.ok(links[0].url.startsWith("https://mp.weixin.qq.com/s?"));
+});
+
+test("全部动态按北京时间理解无时区发布时间", () => {
+  assert.ok(timeValue("2026-06-05 08:17") < timeValue("2026-06-05T10:20:00+08:00"));
+});
+
+test("历史高分文章会按新评分规则重新校准", () => {
+  const article = recalibrateArticleScore({
+    sourceTier: "T1",
+    category: "政策监管",
+    score: 95,
+    dimensions: {
+      policyImpact: 95,
+      businessValue: 95,
+      riskLevel: 95,
+      timeliness: 95,
+      sourceAuthority: 95,
+    },
+  });
+  assert.ok(article.score < 95);
 });
 
 test("缓存读取时过滤只有首页链接的旧信息", () => {

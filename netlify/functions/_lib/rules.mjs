@@ -86,7 +86,9 @@ export function finalScore(dimensions, source, category) {
     dimensions.timeliness * 0.16 +
     dimensions.sourceAuthority * 0.16;
   const categoryBoost = category === "风险预警" ? 5 : category === "经营借鉴" ? 4 : category === "招标采购" ? 4 : category === "政策监管" ? 3 : 0;
-  return Math.max(0, Math.min(100, Math.round(weighted * sourceWeight(source?.tier) + categoryBoost)));
+  const authorityBoost = source?.tier === "T1" ? 5 : source?.tier === "T1.5" ? 3 : 1;
+  const cap = category === "风险预警" ? 95 : ["政策监管", "经营借鉴", "招标采购"].includes(category) ? 92 : 88;
+  return Math.max(0, Math.min(cap, Math.round(weighted * 0.88 + authorityBoost + categoryBoost)));
 }
 
 export function shortSummary(item) {
@@ -154,6 +156,17 @@ export function enrichCandidate(candidate, source, aiResult = null) {
     dimensions,
     score,
     featured: score >= threshold,
+  };
+}
+
+export function recalibrateArticleScore(article) {
+  if (!article?.dimensions) return article;
+  const source = { tier: article.sourceTier };
+  const score = finalScore(article.dimensions, source, article.category);
+  return {
+    ...article,
+    score,
+    featured: score >= sourceThreshold(article.sourceTier, article.category),
   };
 }
 

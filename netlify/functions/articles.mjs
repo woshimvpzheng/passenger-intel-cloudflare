@@ -35,8 +35,12 @@ function filterArticles(articles, query) {
   return filtered.sort(tab === "全部动态" || tab === "广东招标" ? byTime : byImpact).slice(0, limit);
 }
 
-function timeValue(value) {
-  const time = new Date(value).getTime();
+export function timeValue(value) {
+  const text = String(value || "").trim();
+  const normalized = /^\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}/.test(text) && !/[zZ]|[+-]\d{2}:?\d{2}$/.test(text)
+    ? `${text.replace(" ", "T")}+08:00`
+    : text;
+  const time = new Date(normalized).getTime();
   return Number.isFinite(time) ? time : 0;
 }
 

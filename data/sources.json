@@ -184,5 +184,65 @@
     "url": "https://www.zgjtb.com/",
     "listUrl": "https://www.zgjtb.com/",
     "priority": 65
+  },
+  {
+    "id": "wechat-mot",
+    "name": "交通运输部政务微信",
+    "wechatName": "交通运输部",
+    "type": "微信公众号",
+    "tier": "T1.5",
+    "region": "全国",
+    "url": "https://weixin.sogou.com/",
+    "priority": 58,
+    "fetchType": "wechatSearch",
+    "keywords": ["客运", "道路客运", "定制客运", "客运站", "班线", "包车", "春运", "安全监管"]
+  },
+  {
+    "id": "wechat-crta",
+    "name": "中国道路运输协会公众号",
+    "wechatName": "中国道路运输协会",
+    "type": "微信公众号",
+    "tier": "T1.5",
+    "region": "全国",
+    "url": "https://weixin.sogou.com/",
+    "priority": 57,
+    "fetchType": "wechatSearch",
+    "keywords": ["客运", "道路客运", "定制客运", "客运站", "班线", "包车", "旅游包车", "安全监管"]
+  },
+  {
+    "id": "wechat-zgjtb",
+    "name": "中国交通新闻网公众号",
+    "wechatName": "中国交通新闻网",
+    "type": "微信公众号",
+    "tier": "T2",
+    "region": "全国",
+    "url": "https://weixin.sogou.com/",
+    "priority": 56,
+    "fetchType": "wechatSearch",
+    "keywords": ["客运", "道路客运", "定制客运", "客运站", "班线", "包车", "春运", "运输服务"]
+  },
+  {
+    "id": "wechat-guangdong-traffic",
+    "name": "广东交通公众号",
+    "wechatName": "广东交通",
+    "type": "微信公众号",
+    "tier": "T2",
+    "region": "广东",
+    "url": "https://weixin.sogou.com/",
+    "priority": 55,
+    "fetchType": "wechatSearch",
+    "keywords": ["客运", "道路客运", "定制客运", "客运站", "班线", "包车", "广东", "春运"]
+  },
+  {
+    "id": "wechat-chinabus",
+    "name": "客车网公众号",
+    "wechatName": "客车网",
+    "type": "微信公众号",
+    "tier": "T2",
+    "region": "全国",
+    "url": "https://weixin.sogou.com/",
+    "priority": 54,
+    "fetchType": "wechatSearch",
+    "keywords": ["客运", "道路客运", "客车", "旅游包车", "班线", "定制客运", "客运企业", "新能源客车"]
   }
 ]

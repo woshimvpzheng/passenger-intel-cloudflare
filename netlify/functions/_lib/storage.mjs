@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { isCloudflare, isNetlify, isServerlessRuntime } from "./env.mjs";
+import { recalibrateArticleScore } from "./rules.mjs";
 
 const root = globalThis.process?.cwd?.() || "F:/制作自动捕捉网站";
 const localDir = path.join(root, ".netlify-local");
@@ -89,7 +90,7 @@ export async function writeState(state) {
 
 export function normalizeState(state = {}) {
   return {
-    articles: Array.isArray(state.articles) ? state.articles.filter((article) => isArticleDetailUrl(article?.url)) : [],
+    articles: Array.isArray(state.articles) ? state.articles.filter((article) => isArticleDetailUrl(article?.url)).map(recalibrateArticleScore) : [],
     clusters: Array.isArray(state.clusters) ? state.clusters : [],
     briefing: state.briefing || null,
     logs: Array.isArray(state.logs) ? state.logs : [],
