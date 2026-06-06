@@ -88,7 +88,13 @@ export function finalScore(dimensions, source, category) {
   const categoryBoost = category === "风险预警" ? 5 : category === "经营借鉴" ? 4 : category === "招标采购" ? 4 : category === "政策监管" ? 3 : 0;
   const authorityBoost = source?.tier === "T1" ? 5 : source?.tier === "T1.5" ? 3 : 1;
   const cap = category === "风险预警" ? 95 : ["政策监管", "经营借鉴", "招标采购"].includes(category) ? 92 : 88;
-  return Math.max(0, Math.min(cap, Math.round(weighted * 0.88 + authorityBoost + categoryBoost)));
+  const floor =
+    category === "招标采购" && dimensions.businessValue >= 80 ? 78 :
+    category === "经营借鉴" && dimensions.businessValue >= 80 ? 76 :
+    category === "风险预警" && dimensions.riskLevel >= 80 ? 80 :
+    category === "政策监管" && dimensions.policyImpact >= 85 ? 75 :
+    0;
+  return Math.max(0, Math.min(cap, Math.max(floor, Math.round(weighted * 0.88 + authorityBoost + categoryBoost))));
 }
 
 export function shortSummary(item) {
@@ -165,9 +171,16 @@ export function recalibrateArticleScore(article) {
   const score = finalScore(article.dimensions, source, article.category);
   return {
     ...article,
+    title: cleanArticleTitle(article.title),
     score,
     featured: score >= sourceThreshold(article.sourceTier, article.category),
   };
+}
+
+function cleanArticleTitle(value = "") {
+  return String(value)
+    .replace(/20\d{2}[-/年]\d{1,2}[-/月]\d{1,2}(?:日)?$/, "")
+    .trim();
 }
 
 function sanitizeDimensions(value) {

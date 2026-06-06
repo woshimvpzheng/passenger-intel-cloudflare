@@ -139,6 +139,25 @@ test("历史高分文章会按新评分规则重新校准", () => {
   assert.ok(article.score < 95);
 });
 
+test("高经营价值招标信息校准后仍保持精选", () => {
+  const article = recalibrateArticleScore({
+    sourceTier: "T1.5",
+    category: "招标采购",
+    title: "生产人员通勤班车租赁服务项目结果公告2026-06-05",
+    score: 82,
+    dimensions: {
+      policyImpact: 42,
+      businessValue: 88,
+      riskLevel: 34,
+      timeliness: 82,
+      sourceAuthority: 78,
+    },
+  });
+  assert.equal(article.title, "生产人员通勤班车租赁服务项目结果公告");
+  assert.ok(article.score >= 70);
+  assert.equal(article.featured, true);
+});
+
 test("缓存读取时过滤只有首页链接的旧信息", () => {
   const state = normalizeState({
     articles: [
