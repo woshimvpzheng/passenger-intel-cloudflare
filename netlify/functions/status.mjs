@@ -2,7 +2,7 @@ import { jsonResponse, legacyHandler } from "./_lib/http.mjs";
 import { readState } from "./_lib/storage.mjs";
 import { loadSources } from "./_lib/sources.mjs";
 import { aiConfigured } from "./_lib/ai.mjs";
-import { isNetlify } from "./_lib/env.mjs";
+import { isCloudflare, isNetlify } from "./_lib/env.mjs";
 
 export default async function status() {
   const state = await readState();
@@ -17,7 +17,7 @@ export default async function status() {
       sources: sources.length,
       latestLog,
       aiConfigured: aiConfigured(),
-      storage: isNetlify() ? "Netlify Blobs" : "本地预览缓存",
+      storage: isCloudflare() ? "Cloudflare KV" : isNetlify() ? "Netlify Blobs" : "本地预览缓存",
       schedule: "北京时间 7:00、9:00、11:00、13:00、15:00、17:00",
     },
   });

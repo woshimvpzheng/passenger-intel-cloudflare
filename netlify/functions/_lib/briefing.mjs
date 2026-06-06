@@ -9,6 +9,7 @@ export function buildBriefing(articles) {
     section("客流市场", featured),
     section("票价补贴", featured),
     section("风险预警", featured),
+    section("招标采购", featured),
     section("区域动态", featured),
   ].filter((item) => item.items.length);
 
