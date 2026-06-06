@@ -49,6 +49,7 @@ export function normalizeText(value = "") {
 export function isRelevantPassengerNews(item) {
   const text = `${item.title || ""} ${item.content || ""} ${item.sourceName || ""} ${item.region || ""}`;
   const subjectText = `${item.title || ""} ${item.content || ""}`;
+  if (isDirectoryOrSectionPage(item)) return false;
   if (foreignKeywords.some((word) => text.includes(word))) return false;
   const roadHit = roadKeywords.some((word) => text.includes(word));
   const relevantHit = relevantKeywords.some((word) => text.includes(word));
@@ -58,6 +59,15 @@ export function isRelevantPassengerNews(item) {
   const nonRoadHits = nonRoadOnlyKeywords.filter((word) => text.includes(word)).length;
   if (nonRoadHits && !roadHit) return false;
   return domesticHints.some((word) => text.includes(word)) || item.region !== "国外";
+}
+
+function isDirectoryOrSectionPage(item) {
+  const title = String(item.title || "").trim();
+  const content = String(item.content || "");
+  if (!/(分会|委员会)$/.test(title)) return false;
+  const sectionWords = ["客运与站场分会", "城市客运分会", "出租汽车与汽车租赁分会", "货运与物流分会", "国际道路运输分会", "大件运输分会", "危险品运输分会", "工作委员会"];
+  const hits = sectionWords.filter((word) => content.includes(word)).length;
+  return hits >= 3;
 }
 
 export function classify(item) {
