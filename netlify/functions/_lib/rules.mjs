@@ -20,11 +20,13 @@ const relevantKeywords = [
 
 const foreignKeywords = ["国外", "海外", "美国", "欧洲", "日本", "韩国", "印度", "越南", "泰国", "跨境", "国际客运"];
 const nonRoadOnlyKeywords = ["铁路", "高铁", "民航", "航班", "机场", "水运", "港口", "邮轮", "地铁", "航运"];
+const weakPassengerKeywords = ["低空经济", "品质工程", "黄金港口", "水运网", "鱼鸟", "立体交通网", "高速车辆救援", "路政"];
+const strictPolicyWords = ["政策", "通知", "规定", "办法", "方案", "许可", "监管", "整治", "处罚", "执法", "改革", "试点", "规划", "标准", "指南", "意见"];
 const domesticHints = ["中国", "全国", "国务院", "交通运输部", "省", "市", "县", "北京", "上海", "天津", "重庆", "河北", "山西", "辽宁", "吉林", "黑龙江", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北", "湖南", "广东", "广西", "海南", "四川", "贵州", "云南", "陕西", "甘肃", "青海", "宁夏", "新疆", "西藏", "内蒙古"];
 
 const categoryRules = [
   { category: "招标采购", words: ["招标", "采购", "投标", "中标", "成交", "结果公告", "招标公告", "采购公告", "磋商公告", "租赁服务", "通勤", "上下班", "班车租赁", "车辆租赁", "包车"], base: 30 },
-  { category: "政策监管", words: ["政策", "通知", "规定", "办法", "方案", "许可", "改革", "监管", "交通运输部", "交通运输厅"], base: 28 },
+  { category: "政策监管", words: strictPolicyWords, base: 28 },
   { category: "经营借鉴", words: ["经营", "转型", "交旅融合", "定制客运", "平台", "客运站", "旅游", "融合", "品牌", "增值服务"], base: 26 },
   { category: "线路运营", words: ["线路", "班线", "班次", "开通", "恢复", "停运", "调整", "发车", "站场"], base: 24 },
   { category: "客流市场", words: ["客流", "旅客", "发送", "春运", "暑运", "假期", "出行需求", "运量"], base: 22 },
@@ -46,22 +48,28 @@ export function normalizeText(value = "") {
 
 export function isRelevantPassengerNews(item) {
   const text = `${item.title || ""} ${item.content || ""} ${item.sourceName || ""} ${item.region || ""}`;
+  const subjectText = `${item.title || ""} ${item.content || ""}`;
   if (foreignKeywords.some((word) => text.includes(word))) return false;
   const roadHit = roadKeywords.some((word) => text.includes(word));
   const relevantHit = relevantKeywords.some((word) => text.includes(word));
+  const weakOnly = weakPassengerKeywords.some((word) => subjectText.includes(word));
+  if (weakOnly && !roadHit) return false;
   if (!roadHit && !relevantHit) return false;
   const nonRoadHits = nonRoadOnlyKeywords.filter((word) => text.includes(word)).length;
-  if (nonRoadHits && !roadHit && !text.includes("交通运输")) return false;
+  if (nonRoadHits && !roadHit) return false;
   return domesticHints.some((word) => text.includes(word)) || item.region !== "国外";
 }
 
 export function classify(item) {
-  const text = `${item.title || ""} ${item.content || ""} ${item.sourceName || ""}`;
+  const text = `${item.title || ""} ${item.content || ""}`;
   let winner = { category: "区域动态", points: 0, tags: [] };
   for (const rule of categoryRules) {
     const hits = rule.words.filter((word) => text.includes(word));
     const points = hits.length ? rule.base + hits.length * 5 : 0;
     if (points > winner.points) winner = { category: rule.category, points, tags: hits.slice(0, 5) };
+  }
+  if (winner.category === "政策监管" && !strictPolicyWords.some((word) => text.includes(word))) {
+    return { category: "区域动态", points: 0, tags: [] };
   }
   return winner;
 }

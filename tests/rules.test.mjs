@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   buildClusters,
+  classify,
   enrichCandidate,
   isRelevantPassengerNews,
   mergeArticles,
@@ -40,6 +41,24 @@ test("纯铁路信息不会进入道路客运情报", () => {
     title: "铁路部门调整高铁列车运行图",
     content: "本次调整涉及多趟高铁和铁路列车。",
     region: "全国",
+  }), false);
+});
+
+test("仅因来源是交通运输部不会被归入政策监管", () => {
+  const category = classify({
+    title: "西江鱼鸟欢",
+    content: "2026-06-05 08:15 来源: 中国交通新闻网",
+    sourceName: "交通运输部",
+  });
+  assert.equal(category.category, "区域动态");
+});
+
+test("港口水运弱相关内容不会进入道路客运情报", () => {
+  assert.equal(isRelevantPassengerNews({
+    title: "云南出海最近黄金港口将于年内建成",
+    content: "来源: 中国水运网，港口和水运通道建设进展。",
+    sourceName: "交通运输部",
+    region: "云南",
   }), false);
 });
 
@@ -162,7 +181,7 @@ test("缓存读取时过滤只有首页链接的旧信息", () => {
   const state = normalizeState({
     articles: [
       { id: "home", url: "https://www.mot.gov.cn/" },
-      { id: "detail", url: "https://www.mot.gov.cn/jiaotongyaowen/202601/t20260104_4195714.html" },
+      { id: "detail", title: "道路客运班线恢复运营通知", content: "道路客运班线恢复运营", region: "全国", url: "https://www.mot.gov.cn/jiaotongyaowen/202601/t20260104_4195714.html" },
     ],
   });
   assert.deepEqual(state.articles.map((item) => item.id), ["detail"]);
