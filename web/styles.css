@@ -286,8 +286,8 @@ textarea:focus {
 }
 
 .timeline {
-  display: grid;
-  gap: 12px;
+  column-count: 2;
+  column-gap: 12px;
 }
 
 .article {
@@ -295,6 +295,8 @@ textarea:focus {
   display: grid;
   grid-template-columns: 82px minmax(0, 1fr) 72px;
   gap: 14px;
+  break-inside: avoid;
+  margin: 0 0 12px;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -418,6 +420,12 @@ textarea:focus {
 .brief-section h3 {
   font-size: 16px;
   margin-bottom: 8px;
+}
+
+.brief-section-summary {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .brief-item {
@@ -570,6 +578,7 @@ textarea:focus {
   .hero { flex-direction: column; align-items: stretch; }
   .hero-actions { min-width: 0; }
   .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .timeline { column-count: 1; }
   .article { grid-template-columns: 1fr; }
   .briefing-sections,
   .source-grid,

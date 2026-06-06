@@ -1,33 +1,33 @@
 import { beijingDateKey } from "./time.mjs";
 
 export function buildBriefing(articles) {
-  const featured = articles.filter((item) => item.featured).sort((a, b) => b.score - a.score);
-  const sections = [
-    section("政策监管", featured),
-    section("经营借鉴", featured),
-    section("线路运营", featured),
-    section("客流市场", featured),
-    section("票价补贴", featured),
-    section("风险预警", featured),
-    section("招标采购", featured),
-    section("区域动态", featured),
-  ].filter((item) => item.items.length);
+  const timeline = [...articles].sort(byTime);
+  const sections = buildDailySections(timeline);
 
-  const top = featured[0] || articles[0] || null;
+  const top = timeline[0] || null;
   return {
-    date: beijingDateKey(),
+    date: top ? articleDateKey(top.publishedAt) : beijingDateKey(),
     headline: top ? top.title : "暂无客运情报",
     summary: top ? top.reason : "等待首次抓取后生成客运日报。",
     generatedAt: new Date().toISOString(),
-    totalFeatured: featured.length,
+    totalFeatured: timeline.length,
+    totalArticles: timeline.length,
     sections,
   };
 }
 
-function section(category, articles) {
-  return {
-    category,
-    items: articles.filter((item) => item.category === category).slice(0, 8).map((item) => ({
+function buildDailySections(articles) {
+  const groups = new Map();
+  for (const article of articles) {
+    const date = articleDateKey(article.publishedAt);
+    if (!groups.has(date)) groups.set(date, []);
+    groups.get(date).push(article);
+  }
+
+  return [...groups.entries()].map(([date, items]) => ({
+    category: date,
+    summary: dailySummary(items),
+    items: items.map((item) => ({
       id: item.id,
       title: item.title,
       sourceName: item.sourceName,
@@ -35,9 +35,42 @@ function section(category, articles) {
       region: item.region,
       url: item.url,
       score: item.score,
+      category: item.category,
       summary: item.summary,
       reason: item.reason,
       tags: item.tags || [],
     })),
-  };
+  }));
+}
+
+function dailySummary(items) {
+  const categories = [...new Set(items.map((item) => item.category).filter(Boolean))];
+  const top = items[0];
+  if (!top) return "";
+  const categoryText = categories.length ? categories.join("、") : "综合情报";
+  return `本日情报 ${items.length} 条，重点集中在${categoryText}。建议优先关注：${top.reason || top.summary || top.title}`;
+}
+
+function byTime(a, b) {
+  return timeValue(b.publishedAt) - timeValue(a.publishedAt) || (b.score || 0) - (a.score || 0);
+}
+
+function articleDateKey(value) {
+  const text = String(value || "").trim();
+  const direct = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (direct) {
+    const [, year, month, day] = direct;
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  }
+  const date = new Date(text);
+  return Number.isNaN(date.getTime()) ? beijingDateKey() : beijingDateKey(date);
+}
+
+function timeValue(value) {
+  const text = String(value || "").trim();
+  const normalized = /^\d{4}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}/.test(text) && !/[zZ]|[+-]\d{2}:?\d{2}$/.test(text)
+    ? `${text.replace(" ", "T")}+08:00`
+    : text;
+  const time = new Date(normalized).getTime();
+  return Number.isFinite(time) ? time : 0;
 }

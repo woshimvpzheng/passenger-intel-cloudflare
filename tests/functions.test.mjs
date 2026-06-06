@@ -20,6 +20,20 @@ test("briefing function returns briefing", async () => {
   assert.ok(body.briefing.headline);
 });
 
+test("briefing is generated from current timeline articles", async () => {
+  const articlesResponse = await articlesHandler({ httpMethod: "GET", queryStringParameters: { tab: "全部动态" } });
+  const briefingResponse = await briefingHandler({ httpMethod: "GET", queryStringParameters: {} });
+  const articlesBody = JSON.parse(articlesResponse.body);
+  const briefingBody = JSON.parse(briefingResponse.body);
+  const briefingItems = briefingBody.briefing.sections.flatMap((section) => section.items);
+
+  assert.equal(briefingBody.briefing.totalArticles, articlesBody.articles.length);
+  assert.deepEqual(
+    new Set(briefingItems.map((item) => item.id)),
+    new Set(articlesBody.articles.map((item) => item.id)),
+  );
+});
+
 test("sources and status functions return configuration", async () => {
   const sources = JSON.parse((await sourcesHandler({})).body);
   const status = JSON.parse((await statusHandler({})).body);

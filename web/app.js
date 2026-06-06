@@ -1,7 +1,7 @@
 const tabs = {
   "精选情报": "按信源等级、经营影响和风险价值筛选后的重点信息。",
   "全部动态": "保留抓取到的国内道路客运相关信息，按时间和分数排序。",
-  "客运日报": "过去 24 小时精选内容按板块整理，适合早会快速浏览。",
+  "客运日报": "根据情报时间线按自然日提炼摘要，适合早会快速浏览。",
   "经营借鉴": "同行转型、客运站复合经营、定制客运和交旅融合案例。",
   "广东招标": "广东省内通勤、上下班班车、车辆租赁和包车采购机会。",
   "政策监管": "政府政策、监管要求、行业通知和地方试点。",
@@ -199,17 +199,22 @@ function renderArticles() {
 function renderBriefing() {
   const briefing = state.briefing;
   if (!briefing) return;
-  el.briefingMeta.textContent = `${briefing.date} · 精选 ${briefing.totalFeatured || 0} 条 · ${formatPlainTime(briefing.generatedAt)}`;
+  el.briefingMeta.textContent = `${briefing.date} · 来自情报时间线 ${briefing.totalArticles ?? briefing.totalFeatured ?? 0} 条 · ${formatPlainTime(briefing.generatedAt)}`;
   el.briefingHeadline.textContent = briefing.headline;
   el.briefingSummary.textContent = briefing.summary;
   el.briefingSections.innerHTML = (briefing.sections || []).map((section) => `
     <div class="brief-section">
       <h3>${escapeHtml(section.category)}</h3>
+      ${section.summary ? `<p class="brief-section-summary">${escapeHtml(section.summary)}</p>` : ""}
       ${section.items.map((item) => `
         <article class="brief-item">
           <div class="brief-title">
             <strong>${escapeHtml(item.title)}</strong>
             <span>${escapeHtml(item.score)}分</span>
+          </div>
+          <div class="tag-row">
+            <span class="tag category">${escapeHtml(item.category || "情报")}</span>
+            ${(item.tags || []).slice(0, 4).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
           </div>
           <p>${escapeHtml(item.summary || "暂无摘要")}</p>
           <div class="brief-reason">经营判断：${escapeHtml(item.reason || "建议持续关注后续进展。")}</div>
