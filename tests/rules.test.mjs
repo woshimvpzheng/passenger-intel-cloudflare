@@ -71,6 +71,20 @@ test("协会分会栏目页不会进入客运情报", () => {
   }), false);
 });
 
+test("已入库的协会分会栏目页会被缓存过滤", () => {
+  const state = normalizeState({
+    articles: [{
+      id: "section-page",
+      title: "客运与站场分会",
+      summary: "客运与站场分会 城市客运分会 出租汽车与汽车租赁分会 货运与物流分会 国际道路运输分会 大件运输分会",
+      sourceName: "中国道路运输协会",
+      region: "全国",
+      url: "https://www.crta.org.cn/detail.html?id=4&contentId=2229",
+    }],
+  });
+  assert.equal(state.articles.length, 0);
+});
+
 test("道路客运政策能进入政策监管", () => {
   const article = enrichCandidate({
     title: "交通运输部发布道路客运安全监管通知",

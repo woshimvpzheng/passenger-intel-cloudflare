@@ -63,7 +63,7 @@ export function isRelevantPassengerNews(item) {
 
 function isDirectoryOrSectionPage(item) {
   const title = String(item.title || "").trim();
-  const content = String(item.content || "");
+  const content = `${item.content || ""} ${item.summary || ""} ${item.reason || ""}`;
   if (!/(分会|委员会)$/.test(title)) return false;
   const sectionWords = ["客运与站场分会", "城市客运分会", "出租汽车与汽车租赁分会", "货运与物流分会", "国际道路运输分会", "大件运输分会", "危险品运输分会", "工作委员会"];
   const hits = sectionWords.filter((word) => content.includes(word)).length;
