@@ -6,7 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 assets = { directory = "./web", binding = "ASSETS" }
 
 kv_namespaces = [
-  { binding = "PASSENGER_STATE", id = "REPLACE_WITH_KV_NAMESPACE_ID" }
+  { binding = "PASSENGER_STATE", id = "d1bfdc2a9f25477a88b8e42258aed2a0" }
 ]
 
 [triggers]
