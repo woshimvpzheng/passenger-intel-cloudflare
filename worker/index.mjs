@@ -41,7 +41,8 @@ async function routeApi(request, env) {
   if (url.pathname === "/api/status" || url.pathname === "/.netlify/functions/status") return status(request);
   if (url.pathname === "/api/feedback" && request.method === "POST") return saveFeedback(request, env);
   if (url.pathname === "/api/refresh" || url.pathname === "/.netlify/functions/refresh") {
-    return jsonResponse({ ok: false, message: "手动刷新已关闭，系统将按固定频率自动抓取。" }, 410);
+    if (request.method !== "POST") return jsonResponse({ ok: false, message: "请使用 POST 触发后台刷新。" }, 405);
+    return jsonResponse(await refreshPipeline("manual"));
   }
   return null;
 }
