@@ -4,6 +4,7 @@ const tabs = {
   "客运日报": "根据情报时间线按自然日提炼摘要，适合早会快速浏览。",
   "经营借鉴": "同行转型、客运站复合经营、定制客运和交旅融合案例。",
   "广东招标": "广东省内通勤、上下班班车、车辆租赁和包车采购机会。",
+  "轮渡客运": "轮渡、客滚运输、水上客运和停复航等水上出行情报。",
   "政策监管": "政府政策、监管要求、行业通知和地方试点。",
   "风险预警": "安全监管、事故隐患、处罚整治和合规风险。",
   "信源中心": "查看当前分级监控的官方、协会、地方和行业媒体信源。",
@@ -105,13 +106,13 @@ function setTab(tab) {
   el.pageSub.textContent = tabs[tab];
   el.nav.querySelectorAll("button").forEach((button) => button.classList.toggle("active", button.dataset.tab === tab));
   renderActiveView();
-  if (["精选情报", "全部动态", "经营借鉴", "广东招标", "政策监管", "风险预警"].includes(tab)) loadArticles();
+  if (["精选情报", "全部动态", "经营借鉴", "广东招标", "轮渡客运", "政策监管", "风险预警"].includes(tab)) loadArticles();
   if (tab === "客运日报") loadBriefing();
   if (tab === "信源中心") loadSources();
 }
 
 function renderActiveView() {
-  const showFeed = ["精选情报", "全部动态", "经营借鉴", "广东招标", "政策监管", "风险预警"].includes(state.tab);
+  const showFeed = ["精选情报", "全部动态", "经营借鉴", "广东招标", "轮渡客运", "政策监管", "风险预警"].includes(state.tab);
   el.feedView.classList.toggle("hidden", !showFeed);
   el.briefingView.classList.toggle("hidden", state.tab !== "客运日报");
   el.sourceView.classList.toggle("hidden", state.tab !== "信源中心");

@@ -10,6 +10,17 @@
     "priority": 100
   },
   {
+    "id": "pearl-river-navigation",
+    "name": "交通运输部珠江航务管理局",
+    "type": "官方",
+    "tier": "T1",
+    "region": "华南",
+    "url": "https://zjhy.mot.gov.cn/",
+    "listUrl": "https://zjhy.mot.gov.cn/",
+    "priority": 98,
+    "focus": "ferryPassenger"
+  },
+  {
     "id": "gov-policy",
     "name": "中国政府网政策",
     "type": "官方",
@@ -58,6 +69,17 @@
     "url": "https://td.gd.gov.cn/",
     "listUrl": "https://td.gd.gov.cn/",
     "priority": 76
+  },
+  {
+    "id": "hainan-transport",
+    "name": "海南省交通运输厅",
+    "type": "地方官方",
+    "tier": "T1",
+    "region": "海南",
+    "url": "https://jt.hainan.gov.cn/",
+    "listUrl": "https://jt.hainan.gov.cn/",
+    "priority": 76,
+    "focus": "ferryPassenger"
   },
   {
     "id": "gd-gov-purchase",
@@ -232,6 +254,42 @@
     "priority": 55,
     "fetchType": "wechatSearch",
     "keywords": ["客运", "道路客运", "定制客运", "客运站", "班线", "包车", "广东", "春运"]
+  },
+  {
+    "id": "wechat-qiongzhou-ferry",
+    "name": "琼州海峡轮渡管家公众号",
+    "wechatName": "琼州海峡轮渡管家",
+    "type": "微信公众号",
+    "tier": "T1.5",
+    "region": "琼州海峡",
+    "url": "https://weixin.sogou.com/",
+    "priority": 53,
+    "fetchType": "wechatSearch",
+    "keywords": ["琼州海峡", "轮渡", "客滚运输", "停航", "复航", "船票", "预约过海", "过海车辆"]
+  },
+  {
+    "id": "wechat-xuwen-port",
+    "name": "徐闻港公众号",
+    "wechatName": "徐闻港",
+    "type": "微信公众号",
+    "tier": "T2",
+    "region": "广东",
+    "url": "https://weixin.sogou.com/",
+    "priority": 52,
+    "fetchType": "wechatSearch",
+    "keywords": ["徐闻港", "琼州海峡", "轮渡", "客滚运输", "停航", "复航", "船票", "过海"]
+  },
+  {
+    "id": "wechat-railway-ferry",
+    "name": "铁路轮渡公众号",
+    "wechatName": "铁路轮渡",
+    "type": "微信公众号",
+    "tier": "T2",
+    "region": "琼州海峡",
+    "url": "https://weixin.sogou.com/",
+    "priority": 51,
+    "fetchType": "wechatSearch",
+    "keywords": ["铁路轮渡", "琼州海峡", "轮渡", "客滚船", "停航", "复航", "船票", "旅客"]
   },
   {
     "id": "wechat-chinabus",

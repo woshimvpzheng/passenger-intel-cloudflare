@@ -94,6 +94,17 @@ test("泛交通协会活动不会进入道路客运情报", () => {
   }), false);
 });
 
+test("琼州海峡轮渡客运信息能进入轮渡客运", () => {
+  const article = enrichCandidate({
+    title: "琼州海峡客滚运输今日起恢复通航",
+    content: "琼州海峡客滚运输恢复通航，提醒过海旅客和车辆提前预约购票，关注轮渡停复航动态。",
+    url: "https://example.com/ferry",
+  }, t1Source);
+  assert.equal(article.category, "轮渡客运");
+  assert.equal(article.featured, true);
+  assert.ok(article.reason.includes("轮渡"));
+});
+
 test("道路客运政策能进入政策监管", () => {
   const article = enrichCandidate({
     title: "交通运输部发布道路客运安全监管通知",

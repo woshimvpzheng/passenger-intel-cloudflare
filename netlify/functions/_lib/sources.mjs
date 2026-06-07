@@ -21,6 +21,7 @@ export function sourceWeight(tier) {
 export function sourceThreshold(tier, category) {
   if (category === "风险预警") return 72;
   if (category === "招标采购") return 70;
+  if (category === "轮渡客运") return 70;
   if (tier === "T1") return 66;
   if (tier === "T1.5") return 72;
   return 78;
