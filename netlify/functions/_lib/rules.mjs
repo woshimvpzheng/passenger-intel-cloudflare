@@ -28,7 +28,7 @@ const categoryRules = [
   { category: "政策监管", words: strictPolicyWords, base: 28 },
   { category: "经营借鉴", words: ["经营", "转型", "交旅融合", "定制客运", "平台", "客运站", "旅游", "融合", "品牌", "增值服务"], base: 26 },
   { category: "线路运营", words: ["线路", "班线", "班次", "开通", "恢复", "停运", "调整", "发车", "站场"], base: 24 },
-  { category: "客流市场", words: ["客流", "旅客", "发送", "春运", "暑运", "假期", "出行需求", "运量"], base: 22 },
+  { category: "客流市场", words: ["客流", "旅客", "发送", "春运", "暑运", "假期", "出行需求", "运量", "运输量", "旅客运输量", "公路旅客运输量"], base: 29 },
   { category: "票价补贴", words: ["票价", "补贴", "资金", "收费", "免费", "优惠", "成本", "财政"], base: 24 },
   { category: "风险预警", words: ["安全", "事故", "隐患", "处罚", "执法", "整治", "约谈", "违法", "动态监控"], base: 30 },
   { category: "区域动态", words: ["省", "市", "县", "区域", "地方", "试点", "示范"], base: 14 },
@@ -49,6 +49,7 @@ export function isRelevantPassengerNews(item) {
   const text = `${item.title || ""} ${item.content || ""} ${item.sourceName || ""} ${item.region || ""}`;
   const subjectText = `${item.title || ""} ${item.content || ""}`;
   if (isDirectoryOrSectionPage(item)) return false;
+  if (isFreightOnlyRoadTransport(item)) return false;
   if (foreignKeywords.some((word) => text.includes(word))) return false;
   const roadHit = roadKeywords.some((word) => text.includes(word));
   const ferryHit = ferryKeywords.some((word) => subjectText.includes(word));
@@ -71,6 +72,13 @@ function isPassengerProcurement(text) {
 function isPassengerPolicy(text) {
   const passengerWords = ["道路客运", "班线客运", "定制客运", "农村客运", "城乡客运", "旅游包车", "包车客运", "客运站", "道路旅客运输", "旅客运输"];
   return strictPolicyWords.some((word) => text.includes(word)) && passengerWords.some((word) => text.includes(word));
+}
+
+function isFreightOnlyRoadTransport(item) {
+  const subjectText = `${item.title || ""} ${item.content || ""}`;
+  const freightWords = ["货物道路运输", "危险货物道路运输", "危货运输", "货运物流", "道路货运"];
+  const passengerWords = ["旅客", "客运", "班车", "包车", "通勤", "接送", "客车", "客运站", ...ferryKeywords];
+  return freightWords.some((word) => subjectText.includes(word)) && !passengerWords.some((word) => subjectText.includes(word));
 }
 
 function isDirectoryOrSectionPage(item) {

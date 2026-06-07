@@ -105,6 +105,24 @@ test("琼州海峡轮渡客运信息能进入轮渡客运", () => {
   assert.ok(article.reason.includes("轮渡"));
 });
 
+test("危险货物道路运输不会进入客运情报", () => {
+  assert.equal(isRelevantPassengerNews({
+    title: "省道路运输管理局召开危险货物道路运输行业业务培训会",
+    content: "本次培训面向危险货物道路运输企业。",
+    sourceName: "湖南省交通运输厅",
+    region: "湖南",
+  }), false);
+});
+
+test("公路旅客运输量进入客流市场", () => {
+  const article = enrichCandidate({
+    title: "湖南省2026年4月公路旅客运输量",
+    content: "湖南省2026年4月公路旅客运输量发布。",
+    url: "https://example.com/passenger-volume",
+  }, t1Source);
+  assert.equal(article.category, "客流市场");
+});
+
 test("道路客运政策能进入政策监管", () => {
   const article = enrichCandidate({
     title: "交通运输部发布道路客运安全监管通知",
