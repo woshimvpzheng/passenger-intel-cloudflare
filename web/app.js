@@ -76,6 +76,7 @@ function formatTime(value) {
 function scoreClass(item) {
   if (item.category === "风险预警") return "risk";
   if (item.category === "经营借鉴") return "biz";
+  if (item.category === "轮渡客运") return "ferry";
   if (item.score < 75) return "mid";
   return "";
 }
@@ -157,11 +158,11 @@ function renderMetrics() {
   const total = articles.length;
   const featured = articles.filter((item) => item.featured).length;
   const risks = articles.filter((item) => item.category === "风险预警").length;
-  const business = articles.filter((item) => item.category === "经营借鉴").length;
+  const ferry = articles.filter((item) => item.category === "轮渡客运").length;
   el.metrics.innerHTML = [
-    metric(total, "缓存情报"),
-    metric(featured, "精选"),
-    metric(business, "经营借鉴"),
+    metric(total, "情报总量"),
+    metric(featured, "重点跟进"),
+    metric(ferry, "轮渡客运"),
     metric(risks, "风险预警"),
   ].join("");
 }
@@ -284,6 +285,10 @@ el.searchInput.addEventListener("input", () => {
   searchTimer = setTimeout(loadArticles, 250);
 });
 el.feedbackForm.addEventListener("submit", submitFeedback);
+
+if (window.matchMedia("(max-width: 640px)").matches) {
+  collapseSidebar();
+}
 
 Promise.all([loadArticles()]).catch((error) => {
   el.articleList.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`;
