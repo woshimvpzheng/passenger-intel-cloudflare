@@ -2,14 +2,16 @@ import { normalizeText, isRelevantPassengerNews } from "./rules.mjs";
 import { env } from "./env.mjs";
 
 const MAX_LINKS_PER_SOURCE = Number(env("MAX_LINKS_PER_SOURCE", "6"));
+const MAX_LINKS_SCANNED_PER_SOURCE = Number(env("MAX_LINKS_SCANNED_PER_SOURCE", String(MAX_LINKS_PER_SOURCE * 8)));
 const REQUEST_TIMEOUT_MS = Number(env("REQUEST_TIMEOUT_MS", "8000"));
 
 export async function fetchSourceCandidates(source) {
   if (source.fetchType === "wechatSearch") return fetchWechatSearchCandidates(source);
   const html = await fetchText(source.listUrl || source.url);
-  const links = extractLinks(html, source).slice(0, MAX_LINKS_PER_SOURCE);
+  const links = extractLinks(html, source).slice(0, MAX_LINKS_SCANNED_PER_SOURCE);
   const candidates = [];
   for (const link of links) {
+    if (candidates.length >= MAX_LINKS_PER_SOURCE) break;
     const candidate = {
       title: link.title,
       url: link.url,
