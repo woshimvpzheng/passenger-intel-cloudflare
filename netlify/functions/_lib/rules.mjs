@@ -91,7 +91,7 @@ function isDirectoryOrSectionPage(item) {
 }
 
 export function classify(item) {
-  const text = `${item.title || ""} ${item.content || ""}`;
+  const text = `${item.title || ""} ${item.content || ""} ${item.summary || ""} ${item.reason || ""}`;
   let winner = { category: "区域动态", points: 0, tags: [] };
   for (const rule of categoryRules) {
     const hits = rule.words.filter((word) => text.includes(word));
@@ -207,13 +207,16 @@ export function enrichCandidate(candidate, source, aiResult = null) {
 
 export function recalibrateArticleScore(article) {
   if (!article?.dimensions) return article;
+  const categoryInfo = classify(article);
+  const category = categoryInfo.category || article.category;
   const source = { tier: article.sourceTier };
-  const score = finalScore(article.dimensions, source, article.category);
+  const score = finalScore(article.dimensions, source, category);
   return {
     ...article,
     title: cleanArticleTitle(article.title),
+    category,
     score,
-    featured: score >= sourceThreshold(article.sourceTier, article.category),
+    featured: score >= sourceThreshold(article.sourceTier, category),
   };
 }
 

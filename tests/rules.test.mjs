@@ -123,6 +123,23 @@ test("公路旅客运输量进入客流市场", () => {
   assert.equal(article.category, "客流市场");
 });
 
+test("已入库旅客运输量会按新规则重分类", () => {
+  const state = normalizeState({
+    articles: [{
+      id: "passenger-volume",
+      title: "湖南省2026年4月公路旅客运输量",
+      summary: "湖南省2026年4月公路旅客运输量发布。",
+      sourceName: "湖南省交通运输厅",
+      sourceTier: "T1",
+      region: "湖南",
+      url: "https://jtt.hunan.gov.cn/jtt/xxgk/jttj/202606/t20260605_33994366.html",
+      category: "政策监管",
+      dimensions: { policyImpact: 84, businessValue: 75, riskLevel: 51, timeliness: 70, sourceAuthority: 92 },
+    }],
+  });
+  assert.equal(state.articles[0].category, "客流市场");
+});
+
 test("道路客运政策能进入政策监管", () => {
   const article = enrichCandidate({
     title: "交通运输部发布道路客运安全监管通知",
